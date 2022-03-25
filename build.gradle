@@ -1,0 +1,80 @@
+// set as java application
+apply plugin: 'application'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+   // https://mvnrepository.com/artifact/org.json/json
+  implementation group: 'org.json', name: 'json', version: '20200518'
+  implementation 'com.google.guava:guava:30.1.1-jre'
+}
+
+//define main class
+mainClassName = 'NodeStarter'
+
+task Client(type: JavaExec) {
+  group 'simple'
+  description 'Base sample'
+
+  classpath = sourceSets.main.runtimeClasspath
+
+  main = 'TCServer.Client'
+  standardInput = System.in
+
+  if (project.hasProperty("host") && project.hasProperty("port")) {
+    args(project.getProperty('port'), project.getProperty('host'));
+  } else if (project.hasProperty("host") && !project.hasProperty('port')) {
+    args(8000,project.getProperty('host'));
+  } else if (!project.hasProperty("host") && project.hasProperty("port")) {
+    args(project.getProperty('port'),'localhost');
+  }  else if (!project.hasProperty("host") && !project.hasProperty("port")) {
+    args(8000,'localhost');
+  }
+}
+
+task TC(type: JavaExec) {
+  group 'simple'
+  description 'Base sample'
+
+  classpath = sourceSets.main.runtimeClasspath
+
+  main = 'TCServer.TCServer'
+  standardInput = System.in
+
+  if (!project.hasProperty('port')) {
+    args(8000);
+  } else {
+    args(project.getProperty('port'));
+  }
+
+  //args (7000,8000,8001);
+  //args 8000
+  //args 8001
+}
+
+task node1(type: JavaExec) {
+  group 'simple'
+  description 'Base sample'
+
+  classpath = sourceSets.main.runtimeClasspath
+
+  main = 'TCServer.Node1'
+  standardInput = System.in
+
+  args(7000);
+}
+
+task node2(type: JavaExec) {
+  group 'simple'
+  description 'Base sample'
+
+  classpath = sourceSets.main.runtimeClasspath
+
+  main = 'TCServer.Node2'
+  standardInput = System.in
+
+  args(7001);
+  //args(8000);
+}
