@@ -1,4 +1,3 @@
-# Assignment 5 Activity 2
 ## Description
  
 This program can add tips for a class to the server and display the ones that were successfully added.
